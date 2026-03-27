@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Quanto sei Jobber?</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+      background: #f7f7f7;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .question {
+      margin: 8px 0;
+      padding: 6px;
+      background: white;
+      border-radius: 6px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Quanto sei Jobber?</h1>
+
+<form id="testForm"></form>
+
+<div style="text-align:center;">
+  <button type="button" onclick="calculateScore()">Submit</button>
+</div>
+
+<p id="result"></p>
+
+<script>
+const questions = [
+"Ho ricevuto un cazziatone da Elisabetta",
+"Ho ricevuto un cazziatone da Elena",
+"Ho rubato dal bar",
+"Ho rotto qualcosa di proprietà del collegio",
+"Mi sono stati decurtati soldi dalla cauzione",
+"Ho ricevuto una multa per mancato ritiro pasto",
+"Ho smarrito le chiavi",
+"Ho dormito in lounge",
+"Mi sono chiuso fuori dalla stanza",
+"Ho dormito ai tavolini in giardino",
+"Ho dormito in bunker",
+"Non mi sono svegliato per le pulizie",
+"Mi sono appropriato di qualcosa del collegio",
+"Ho tenuto le bacinelle grigie per più di due giorni in stanza",
+"Ho portato in stanza stoviglie",
+"Ho rubato alla mensa del Tosi",
+"Ho giocato al biliardino dello Scopoli",
+"Ho battuto Giulia Q. a biliardino",
+"Ho Abbracciato Mohammed",
+"Ho fatto sesso nel bagno disabili",
+"Ho fatto sesso al job",
+"Ho cacciato il mio compagno di stanza per fare sesso",
+"Ho sentito qualcun altro fare sesso",
+"Ho fatto sesso con almeno 3 persone diverse al Job",
+"Ho fatto sesso con un internazionale",
+"Mi sono masturbato con il mio compagno di stanza in camera",
+"Ho spacciato le bibite della mensa",
+"Sono andato al sushi al Centro Giotto",
+"Sono andato al Mercolegin con Mohammed",
+"Mi sono ubriacato ad una festa del Job",
+"Sono tornato ubriaco al Job",
+"Ho fatto sesso in Guest House",
+"Ho visto Peppe in mutande",
+"Ho giocato a ping pong con Serafino",
+"Ho bevuto una tisanina con Anna",
+"Ho conosciuto Gloria della mensa",
+"Sono passato sotto il biliardino (Fvck u Giulia)",
+"Ho visto Mare Fuori con Davide",
+"Sono stato sdogato",
+"Ho sdogato una SMDM",
+"Sono stato sbrandato",
+"Ho sbrandato una SMDM",
+"Ho trovato Elsa & Anna in camera",
+"Ho mollato palestra",
+"Ho studiato in aula 2 fino alle 2",
+"Sono stato svegliato dalle signore delle pulizie (oopsie)",
+"Ho avuto la candida",
+"Ho tifato Sal da Vinci a Sanremo",
+"Sono finito in Top 3 al FantaSanremo",
+"Ho lasciato i vestiti in lavanderia per più di una settimana",
+"Ho sentito Dori urlare per i corridoi",
+"Ho abbracciato la colonna in refe",
+"Ho bevuto il Fresh Coffee in Refe (grazie Giorgia <3)",
+"Ho messo la moka in frigo",
+"Ho fatto cacca nei bagni comuni",
+"Ho scannerizzato il QR di Timothee Salame in refe",
+"Ho battuto Benny Corso a scambio (impossibile)",
+"Ho avvistato LP per più di 5 minuti",
+"Ho rubato (preso in prestito, spero) un ombrello all’ingresso",
+"Ho chiesto a Davide di riparare la mia bici",
+"Ho visto le tette di Dori",
+"Sono stato espulso dal collegio da Luca Rigo",
+"Ho rubato le chiavi dell'aula musica a Fra recchia",
+"Ho chiamato l'aula musica \"aula arte\" o viceversa",
+"Ho sentito Martin lamentarsi della vita",
+"Ho visitato Gioia Tauro (RC) con Jayamal",
+"Ho buttato i cartoni della pizza ai cassonetti fuori dal Job",
+"Ho ritirato le pizze da IdeaPizza",
+"Ho mangiato le pizze maxi dell'amico di Ousmane",
+"Ho ordinato il kebab da Diva",
+"Sara Bruno mi ha chiamato \"tremòne\"",
+"Ho baciato la pelata di Simo Perra",
+"Ho fatto un 69 in collegio",
+"Ho baciato qualcuno di un’altra residenza",
+"Ho baciato qualcuno a una festa in un'altra residenza",
+"Ho aperto la porta a Serafino",
+"Ho sentito Davide bestemmiare",
+"Ho cavalcato il cavallo di Alice Baldo",
+"Ho visto Alice Baldo fare una videochiamata col suo cavallo",
+"Ho visto Tobi senza cuffie (le usa anche in doccia)",
+"Ho ordinato un dessert al cacao a mensa senza sapere cosa fosse",
+"Ho smarrito indumenti in biancheria",
+"Ho visto almeno 8 paia di scarpe di Alice Mariani",
+"Ho preso cibo dalla mensa per il weekend",
+"Ho lavato stoviglie in cucina/refe al posto di qualcun altro (vafangul)",
+"Ho cucinato la carbonara con Diana (Daje Roma Daje)",
+"Ho sentito Giorgia parlare in Arbëreshë",
+"Mohammed mi ha chiesto \"Come butta \"?",
+"Ho ballato con Mohammed",
+"Ho chiesto a GPS di aprirmi camera",
+"Ho preso in giro Serena",
+"Ho capito una battuta prima di Serena",
+"Sono andato a dormire dopo Tobi",
+"Sono andato a correre con Vincent",
+"Ho insultato i terroni",
+"Ho sentito Fabi parlare di Thomas",
+"Ho fatto la ceretta a peppe",
+"Ho sputato a Peppe ma ho incolpato altri",
+"Ho sentito Furri dire \"follia\"",
+"Ho sentito riccardo dire \"crazy\"",
+"Ho avuto una crush per Simo (perchè sei gay vaffanculo)",
+"Ho ceduto i miei avanzi a Gioele / Fra Lucchetta",
+"Ho visto Luize senza Fabi",
+"Ho sentito Giulia Ben. nominare Michele Bravi",
+"Ho fatto pompe, pompini, pompette",
+"Ho schiaffeggiato il culo di Dori",
+"Ho fornito assistenza a un collegiale",
+"Sono stato al karaoke del Berlino",
+"Ho fatto serata al Fish con Yuchen",
+"Sono stato ad un Gintonico all’Hall",
+"Ho provato ad entrare al chiosco ma sono rimasto fuori in fila",
+"Ho preso un caffè da Clistina",
+"Ho fatto mercolegin con le pulizie alle 9 il giorno dopo",
+"Ho fatto serata con lezione alle 8.30 il giorno dopo",
+"Sono andato alla Pam in ciabatte",
+"Mi lamento dei prezzi della Pam per poi andarci comunque",
+"Ho dimenticato delle banane nel mio box",
+"Ho colonizzato altri box vuoti",
+"Ho sentito Alice Mariani raccontare le sue disavventure amorose",
+"Ho rubato un pennarello dall'aula 1",
+"Ho fatto colazione da Manzato con sconto Mazza",
+"Ho spinto il furgone della Forcellini",
+"Ho portato/ mi sono fatto portare sul portapacchi della bici",
+"Ho giocato a Exploding Kittens con Martin",
+"Ho fatto il Ramadan",
+"Ho partecipato ad una Messa di DF",
+"Ho pranzato con DF",
+"Ho fatto l’esperimento di Alice Mariani (non sono stato costretto, no no)",
+"Ho partecipato ai Mazza Days",
+"Ho visto N/2 ubriaca",
+"Ho visto Fra Grava incazzata",
+"Ho fatto un cruciverba con Alice Mariani",
+"Ho contribuito alla scrittura di un papiro",
+"Ho tifato il Napoli in diretta con Peppe",
+"Sono stato un boscaiolo (ho preso la salmonella)",
+"Ho imbucato un esterno",
+"Ho visto il mio compagno di stanza nudo",
+"Sono caduto/ ho fatto cadere qualcuno in bici",
+"Ho avvistato Giorgia al Tosi",
+"Ho visto la vasca da bagno di Francesco Barone",
+"Mi sono immatricolato",
+"Ho mangiato in bunker",
+"Ho sentito Nephele suonare l’arpa",
+"Ho corso la Padova Marathon",
+"Ho fatto il presidente di una commissione",
+"Ho partecipato al Torneo del Vino",
+"Ho guardato il tramonto dal terzo piano",
+"Ho chiamato un’ambulanza al Job",
+"Ho ghostato Elisabetta",
+"Ho dimenticato di prenotare il pranzo",
+"Elisabetta mi ha incatenato la bici",
+"Ho visto Sara Vietri con il turbante in giro per il Job",
+"Ho giocato a bombardino con Mohammed",
+"Ho sentito Mohammed intonare \"L'Italiano\"",
+"Ho cominciato a studiare prima che arrivassero le signore delle pulizie",
+"Ho subito molestie da Peppe (si scherza)",
+"Ho rubato dal box di altri",
+"Ho visto Chiara arrivare in orario",
+"Ho sentito Lisa dire \"Hai spaccato!\"",
+
+
+];
+
+// Render questions
+const form = document.getElementById("testForm");
+
+questions.forEach((q, i) => {
+  const div = document.createElement("div");
+  div.className = "question";
+
+  div.innerHTML = `
+    <label>
+      <input type="checkbox" name="q${i}">
+       ${i + 1}. ${q}
+    </label>
+  `;
+
+  form.appendChild(div);
+});
+
+// Calculate score
+function calculateScore() {
+  let checked = 0;
+
+  questions.forEach((_, i) => {
+    const cb = document.querySelector(`input[name="q${i}"]`);
+    if (cb.checked) checked++;
+  });
+
+  const total = questions.length;
+  const score = checked;
+
+  let label = "";
+
+  if (score > 100) label = "Sei una colonna del Job Campus";
+  else if (score > 75) label = "Stai diventando un vecchio, continua così";
+  else label = "Sei proprio una matricola";
+
+  document.getElementById("result").innerText =
+    `Il tuo punteggio: ${score} / ${total} — ${label}`;
+}
+</script>
+
+</body>
+</html>
